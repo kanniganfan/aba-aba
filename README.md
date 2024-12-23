@@ -2,6 +2,18 @@
 
 一个将中文转换为阿巴语言（及反向转换）的图形界面工具。
 
+## 重要说明
+
+由于汉语言文字博大精深，转换过程中可能会出现一些不准确或错误的情况：
+1. 多音字问题：同一个汉字可能有多个读音，程序可能选择了不正确的读音
+2. 同音字问题：不同的汉字可能有相同的拼音，转换回中文时可能选择了不同的字
+3. 上下文理解：程序无法像人类一样理解上下文，可能在选择用字时出现偏差
+
+如果你发现任何问题或有改进建议：
+- 欢迎在 Issues 中提出
+- 可以 Fork 项目进行改进并提交 Pull Request
+- 或者直接联系作者讨论
+
 ## 功能特点
 
 - 支持中文到阿巴语言的转换
@@ -78,10 +90,15 @@ python aba_gui.py
 
 MIT License
 
-## 贡献指南
+## 参与贡献
 
-欢迎提交 Issue 和 Pull Request！
+如果你有更好的想法或建议：
+1. Fork 本仓库
+2. 创建新的功能分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交你的修改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 开启一个 Pull Request
 
 ## 作者
 
-[你的名字]
+kanniganfan
