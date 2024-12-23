@@ -1,15 +1,13 @@
 import sys
 import json
 import re
+import os
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                             QHBoxLayout, QTextEdit, QPushButton, QLabel, 
                             QMessageBox, QTabWidget, QLineEdit)
 from PyQt6.QtGui import QFont, QPalette, QColor
 from PyQt6.QtCore import Qt
 import pypinyin
-sys.path.append('Pinyin2Hanzi-master')
-from Pinyin2Hanzi import DefaultHmmParams
-from Pinyin2Hanzi import viterbi
 
 class AbaConverter:
     # 字形结构映射
@@ -60,9 +58,35 @@ class AbaConverter:
     # 创建反向映射
     ABA_TO_PINYIN = {v: k for k, v in PINYIN_TO_ABA.items()}
 
+    # 常用拼音到汉字的映射
+    PINYIN_TO_HANZI = {
+        'wo': ['我', '握', '窝'],
+        'ni': ['你', '尼', '呢'],
+        'hao': ['好', '号', '耗'],
+        'ma': ['吗', '妈', '马'],
+        'shi': ['是', '时', '事'],
+        'de': ['的', '得', '地'],
+        'le': ['了', '乐', '勒'],
+        'ba': ['吧', '把', '爸'],
+        'a': ['啊', '阿', '呵'],
+        'ren': ['人', '任', '认'],
+        'ai': ['爱', '艾', '埃'],
+        'shuo': ['说', '硕', '烁'],
+        'dao': ['到', '道', '导'],
+        'kan': ['看', '刊', '砍'],
+        'dong': ['动', '东', '懂'],
+        'bu': ['不', '步', '补'],
+        'zhi': ['知', '只', '之'],
+        'hui': ['会', '回', '汇'],
+        'neng': ['能', '嫩'],
+        'dong': ['懂', '动', '东'],
+        'jie': ['解', '姐', '节'],
+        'shuo': ['说', '硕', '烁'],
+        'hua': ['话', '化', '华']
+    }
+
     def __init__(self):
-        # 初始化 HMM 参数
-        self.hmm_params = DefaultHmmParams()
+        pass
 
     def get_character_structure(self, char):
         """获取汉字的结构（这里需要一个字形结构数据库，暂时返回默认值）"""
@@ -117,29 +141,6 @@ class AbaConverter:
         except Exception as e:
             return f"转换错误: {str(e)}"
 
-    def aba_to_chinese(self, aba_text):
-        """从阿巴编码转换为中文"""
-        try:
-            # 从阿巴编码提取拼音
-            pinyin_list = self.extract_pinyin_from_aba(aba_text)
-            
-            if not pinyin_list:
-                return "无法识别的阿巴编码"
-            
-            # 去除声调数字
-            clean_pinyin_list = [re.sub(r'\d', '', p) for p in pinyin_list]
-            
-            # 使用 viterbi 算法转换为汉字
-            result = viterbi(self.hmm_params, observations=clean_pinyin_list, path_num=1)
-            
-            if not result:
-                return "无法转换为汉字"
-            
-            # 返回最可能的结果
-            return ''.join(result[0].path)
-        except Exception as e:
-            return f"转换错误: {str(e)}"
-
     def extract_pinyin_from_aba(self, aba_text):
         """从阿巴编码提取拼音"""
         try:
@@ -180,18 +181,35 @@ class AbaConverter:
                         current_pinyin += self.ABA_TO_PINYIN[base_part]
                 
                 if current_pinyin:
-                    # 为第一个元音添加声调
-                    if tone:
-                        for i, char in enumerate(current_pinyin):
-                            if char in 'aeiouüv':
-                                current_pinyin = current_pinyin[:i+1] + tone + current_pinyin[i+1:]
-                                break
                     pinyin_list.append(current_pinyin)
             
             return pinyin_list
         except Exception as e:
             print(f"解析错误: {str(e)}")
             return []
+
+    def aba_to_chinese(self, aba_text):
+        """从阿巴编码转换为中文"""
+        try:
+            # 从阿巴编码提取拼音
+            pinyin_list = self.extract_pinyin_from_aba(aba_text)
+            
+            if not pinyin_list:
+                return "无法识别的阿巴编码"
+            
+            # 转换每个拼音到最可能的汉字
+            result = []
+            for pinyin in pinyin_list:
+                # 查找常用字映射
+                if pinyin in self.PINYIN_TO_HANZI:
+                    result.append(self.PINYIN_TO_HANZI[pinyin][0])
+                else:
+                    # 如果没有找到映射，使用占位符
+                    result.append('□')
+            
+            return ''.join(result)
+        except Exception as e:
+            return f"转换错误: {str(e)}"
 
 class MainWindow(QMainWindow):
     def __init__(self):
