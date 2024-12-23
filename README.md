@@ -16,8 +16,8 @@
 1. 确保已安装 Python 3.6 或更高版本
 2. 克隆仓库：
 ```bash
-git clone https://github.com/yourusername/aba-converter.git
-cd aba-converter
+git clone https://github.com/kanniganfan/aba-aba.git
+cd aba-aba
 ```
 
 3. 安装依赖：
