@@ -2,6 +2,30 @@
 
 一个将中文转换为阿巴语言（及反向转换）的图形界面工具。
 
+## 下载和安装
+
+### 方式一：直接使用（推荐）
+1. 在 [Releases](https://github.com/kanniganfan/aba-aba/releases) 页面下载最新版本的 `阿巴语言转换器.exe`
+2. 双击运行即可，无需安装任何依赖
+
+### 方式二：从源码运行
+1. 确保已安装 Python 3.6 或更高版本
+2. 克隆仓库：
+```bash
+git clone https://github.com/kanniganfan/aba-aba.git
+cd aba-aba
+```
+
+3. 安装依赖：
+```bash
+pip install -r requirements.txt
+```
+
+4. 运行程序：
+```bash
+python aba_gui.py
+```
+
 ## 重要说明
 
 由于汉语言文字博大精深，转换过程中可能会出现一些不准确或错误的情况：
@@ -23,26 +47,7 @@
 - 现代化的图形界面
 - 内置编码对照表
 
-## 安装说明
-
-1. 确保已安装 Python 3.6 或更高版本
-2. 克隆仓库：
-```bash
-git clone https://github.com/kanniganfan/aba-aba.git
-cd aba-aba
-```
-
-3. 安装依赖：
-```bash
-pip install -r requirements.txt
-```
-
 ## 使用方法
-
-运行程序：
-```bash
-python aba_gui.py
-```
 
 ### 中文转阿巴语言
 1. 在输入框中输入中文文本
